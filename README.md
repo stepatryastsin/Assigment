@@ -1,1 +1,2 @@
-# TestAssignment
+# Elevator Simulation System
+This project implements an elevator control system simulation, designed to simulate the functionality of a real-world elevator. It consists of various components that handle elevator control, button press actions, weight checks, and door operations. The system allows interaction between multiple elevators and floors, simulating real-life elevator operations in buildings.
