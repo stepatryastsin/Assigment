@@ -5,19 +5,23 @@
 #include <string>
 #include <sstream>  // Для работы с потоками в памяти
 #include <iomanip>  // Для форматирования
-
+#include <cassert> 
 Elevator::Elevator(const std::string& nameElevator, unsigned short capacity)
-    : _elevatorName(nameElevator), _capacity(capacity), _targetFloor(1), _currentFloor(1), _currentPeopleCount(0), _state(State::NONE) {
+    : _elevatorName(nameElevator), _capacity(capacity), _targetFloor(1), _currentFloor(1),
+    _currentPeopleCount(0), _state(State::NONE), _bufferFloor(0) {
     _manager = std::make_unique<Manager>("Master Elevator");
-    _bufferFloor = 0;
 }
 
 void Elevator::move(unsigned short targetFloor) {
+    assert(targetFloor >= 1 && targetFloor <= BUTTONFLOOR);
+
     _bufferFloor = targetFloor;
+
     if (targetFloor == _currentFloor) {
         std::cout << "Elevator "<< this->_elevatorName <<" already on floor " << _currentFloor << std::endl;
         return;
     }
+
     while (_currentFloor != targetFloor) {
         if (targetFloor > _currentFloor) {
             ++_currentFloor;
@@ -30,20 +34,23 @@ void Elevator::move(unsigned short targetFloor) {
         std::cout << *this << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
+
     setState(State::WAIT);
 }
 
 bool Elevator::checkWeight(unsigned short people) const {
-    return _capacity >= people + _currentPeopleCount;
+    return (_capacity >= people + _currentPeopleCount);
 }
 
 void Elevator::addPeople(unsigned short people) {
+    assert(people > 0);
     if (checkWeight(people)) {
         _currentPeopleCount += people;
     }
 }
 
 void Elevator::removePeople(unsigned short people) {
+    assert(people > 0);
     if (_currentPeopleCount >= people) {
         _currentPeopleCount -= people;
     }
@@ -66,7 +73,6 @@ unsigned short Elevator::getCurrentFloor() const
 void Elevator::action() {
     int index = -1;
 
-    // Find the first pressed button
     auto it = std::find_if(getButtons().begin(), getButtons().end(),
         [](const std::pair<bool, std::string>& p) {
             return p.first == true;
@@ -76,37 +82,26 @@ void Elevator::action() {
         index = std::distance(getButtons().begin(), it);
     }
 
-    // Handle floor buttons
+
     if (index >= 0 && index < BUTTONFLOOR) {
         setButtonState(Button::NUMBER);
-        move(index + 1);  // Move to the selected floor
+        move(index + 1);  
         setState(State::WAIT);
         unpressButton(index);
         setButtonState(Button::NOTHING);
     }
-    // Handle service buttons
+
     else if (index == Button::OPEN) {
-        setButtonState(Button::OPEN);
-        std::cout << "Opening door..." << std::endl;
-        setState(State::OPENDOOR);
-        std::cout << *this << std::endl;
-        unpressButton(index);
-        setButtonState(Button::NOTHING);
+        handleDoorAction("Openning door...", State::OPENDOOR);
     }
     else if (index == Button::CLOSE) {
-        setButtonState(Button::CLOSE);
-        std::cout << "Closing door..." << std::endl;
-        setState(State::CLOSEDOOR);
-        std::cout << *this << std::endl;
-        unpressButton(index);
-        setButtonState(Button::NOTHING);
+        handleDoorAction("Openning door...",State::CLOSEDOOR);
     }
     else if (index == Button::DISPETCHER) {
         setButtonState(Button::DISPETCHER);
         std::cout << "Calling dispatcher..." << std::endl;
         std::cout << *this << std::endl;
         master();
-
         std::cout << std::endl;
         unpressButton(index);
         setButtonState(Button::NOTHING);
@@ -204,4 +199,14 @@ std::ostream& operator<<(std::ostream& out, const Elevator& curr) {
     out << border << std::endl;
 
     return out;
+}
+
+
+void Elevator::handleDoorAction(const std::string& message, State doorState) {
+    setButtonState(doorState == State::OPENDOOR ? Button::OPEN : Button::CLOSE);
+    std::cout << message << std::endl;
+    setState(doorState);
+    std::cout << * this << std::endl;
+    unpressButton(doorState == State::OPENDOOR ? Button::OPEN : Button::CLOSE);
+    setButtonState(Button::NOTHING);
 }

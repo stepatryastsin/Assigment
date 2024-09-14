@@ -25,7 +25,7 @@ public:
     void removePeople(unsigned short people);
     bool checkDoor();
     void action();
-
+    void handleDoorAction(const std::string& message, State doorState);
     unsigned short getCurrentPeopleCount() const;
     unsigned short getCurrentFloor() const;
     unsigned short getCapacity() const;
