@@ -1,31 +1,28 @@
-# Compiler
-CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic
+cmake_minimum_required(VERSION 3.10)
 
-# Directories
-SRC_DIR = src
-BUILD_DIR = build
 
-# Source files
-SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
-OBJECTS = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SOURCES))
+project(ElevatorSimulation)
 
-# Executable
-EXECUTABLE = elevator_simulation
 
-# Targets
-.PHONY: all clean
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-all: $(BUILD_DIR) $(EXECUTABLE)
 
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+set(SOURCES
+    ControlPanel.cpp
+    Elevator.cpp
+    Floor.cpp
+    Manager.cpp
+    TestAssignment.cpp 
+)
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CXX) $(OBJECTS) -o $@
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+set(HEADERS
+    ControlPanel.h
+    Elevator.h
+    Floor.h
+    Manager.h
+)
 
-clean:
-	rm -rf $(BUILD_DIR)/*.o $(EXECUTABLE)
+
+add_executable(ElevatorSimulation ${SOURCES} ${HEADERS})
