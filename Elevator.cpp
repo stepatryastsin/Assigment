@@ -3,12 +3,13 @@
 #include <thread>
 #include <algorithm>
 #include <string>
-#include <sstream>  // Для работы с потоками в памяти
-#include <iomanip>  // Для форматирования
+#include <sstream>  
+#include <iomanip>  
 #include <cassert> 
+
 Elevator::Elevator(const std::string& nameElevator, unsigned short capacity)
     : _elevatorName(nameElevator), _capacity(capacity), _targetFloor(1), _currentFloor(1),
-    _currentPeopleCount(0), _state(State::NONE), _bufferFloor(0) {
+    _currentPeopleCount(0), _state(State::WAIT), _bufferFloor(0) {
     _manager = std::make_unique<Manager>("Master Elevator");
 }
 
@@ -19,6 +20,7 @@ void Elevator::move(unsigned short targetFloor) {
 
     if (targetFloor == _currentFloor) {
         std::cout << "Elevator "<< this->_elevatorName <<" already on floor " << _currentFloor << std::endl;
+        std::cout << *this << std::endl;
         return;
     }
 
@@ -95,7 +97,7 @@ void Elevator::action() {
         handleDoorAction("Openning door...", State::OPENDOOR);
     }
     else if (index == Button::CLOSE) {
-        handleDoorAction("Openning door...",State::CLOSEDOOR);
+        handleDoorAction("Clossing door...",State::CLOSEDOOR);
     }
     else if (index == Button::DISPETCHER) {
         setButtonState(Button::DISPETCHER);
@@ -168,7 +170,6 @@ std::string Elevator::printStatusPanel() const
 }
 
 std::ostream& operator<<(std::ostream& out, const Elevator& curr) {
-    // Собираем текст в строковый поток
     std::ostringstream oss;
     oss << "Current Floor: " << curr._currentFloor << std::endl;
     oss << "Current People: " << curr._currentPeopleCount << std::endl;

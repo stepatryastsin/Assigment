@@ -13,18 +13,18 @@ private:
     void freeMode() const;
     void taskMode() const;
 
-    // Core process methods
+
     void elevatorProcess(std::unique_ptr<Elevator>& elevator1, std::unique_ptr<Elevator>& elevator2, std::unique_ptr<Floor>& floor) const;
 
-    // Utility methods
+  
     int getValidatedInput(const std::string& prompt, int min, int max) const;
     std::string getCommand() const;
 
-    // Helper for task simulation
+
     void simulatePassenger(Elevator& elevator, Floor& floorControl, int startFloor, int targetFloor) const;
 };
 
-// Main function
+
 int main() {
     Start app;
     app.simulation();
