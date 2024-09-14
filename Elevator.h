@@ -23,7 +23,7 @@ public:
     bool checkWeight(unsigned short people) const;
     void addPeople(unsigned short people);
     void removePeople(unsigned short people);
-
+    bool checkDoor();
     void action();
 
     unsigned short getCurrentPeopleCount() const;
@@ -39,13 +39,15 @@ public:
 private:
     unsigned short _currentFloor;
     unsigned short _targetFloor;
+    unsigned short _bufferFloor;
     unsigned short _capacity;
     unsigned short _currentPeopleCount;
     std::string _elevatorName;
     std::unique_ptr<Manager> _manager;
     State _state;
 
-    void printStatus() const;
+    std::string printStatusLift() const;
+    std::string printStatusPanel() const;
     void setState(State newState);
 };
 

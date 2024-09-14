@@ -13,10 +13,21 @@ ControlPanel::ControlPanel() {
     _buttonPanel.push_back(std::make_pair(false, "D")); // Dispatcher
     _buttonPanel.push_back(std::make_pair(false, "O")); // Open
     _buttonPanel.push_back(std::make_pair(false, "C")); // Close
+    _button = Button::NOTHING;
 }
 
 ControlPanel::~ControlPanel() {
     _buttonPanel.clear();
+}
+
+void ControlPanel::setButtonState(Button button)
+{
+    _button = button;
+}
+
+Button ControlPanel::getButton() const
+{
+    return _button;
 }
 
 const std::vector<std::pair<bool, std::string>>& ControlPanel::getButtons() const {

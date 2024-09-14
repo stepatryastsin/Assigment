@@ -87,7 +87,6 @@ void Start::elevatorProcess(std::unique_ptr<Elevator>& elevator1, std::unique_pt
         floor->call(currentFloor);
         chosenElevator->move(floor->getFloor());
 
-
         int peopleOnFloor = getValidatedInput("How many people on the floor (1 - 5): ", 1, 5);
 
 
@@ -96,10 +95,8 @@ void Start::elevatorProcess(std::unique_ptr<Elevator>& elevator1, std::unique_pt
             peopleOnFloor = getValidatedInput("Enter the number of people entering the elevator (1 - 5): ", 1, 5);
         }
 
-
         floor->addPeople(peopleOnFloor);
         chosenElevator->addPeople(peopleOnFloor);
-
 
         std::string command;
         while (chosenElevator->getCurrentPeopleCount() > 0) {
@@ -110,8 +107,7 @@ void Start::elevatorProcess(std::unique_ptr<Elevator>& elevator1, std::unique_pt
 
             chosenElevator->action();
 
-
-            if (chosenElevator->getState() == State::OPENDOOR) {
+            if (chosenElevator->checkDoor()) {
                 int peopleOut = getValidatedInput("How many people will leave the elevator (1 - " + std::to_string(chosenElevator->getCurrentPeopleCount()) + "): ", 0, chosenElevator->getCurrentPeopleCount());
                 chosenElevator->removePeople(peopleOut);
             }

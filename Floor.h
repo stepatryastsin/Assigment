@@ -4,9 +4,6 @@
 #include "Elevator.h"
 
 class Floor {
-private:
-    unsigned short _floor;
-    static unsigned short _people;
 public:
     Floor();
 
@@ -15,6 +12,9 @@ public:
 
     unsigned short getFloor() const;
     unsigned short getPeople() const;
+private:
+    unsigned short _floor;
+    static unsigned short _people;
 };
 
 #endif // FLOOR_H

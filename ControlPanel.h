@@ -11,18 +11,21 @@
 
 enum Button {
     NUMBER = 0,
-    DISPETCHER = BUTTONFLOOR, 
+    DISPETCHER = BUTTONFLOOR,
     CLOSE,
-    OPEN
+    OPEN,
+    NOTHING
 };
 
 class ControlPanel {
 private:
     std::vector<std::pair<bool, std::string>> _buttonPanel;
+    Button _button;
 protected:
     ControlPanel();
     ~ControlPanel();
-
+    void  setButtonState(Button button);
+    Button getButton() const;
     bool isButtonPressed(unsigned short button) const; // Check if a button is pressed
     static unsigned short getButtonIndex(const std::string& button);
 public:
