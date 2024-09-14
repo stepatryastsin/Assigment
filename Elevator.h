@@ -27,6 +27,7 @@ public:
     void action();
 
     unsigned short getCurrentPeopleCount() const;
+    unsigned short getCurrentFloor() const;
     unsigned short getCapacity() const;
     unsigned short getTarget() const;
     State getState() const;
@@ -36,10 +37,10 @@ public:
     friend std::ostream& operator<<(std::ostream& out, const Elevator& elevator);
 
 private:
-    static unsigned short _currentFloor;
+    unsigned short _currentFloor;
     unsigned short _targetFloor;
     unsigned short _capacity;
-    static unsigned short _currentPeopleCount;
+    unsigned short _currentPeopleCount;
     std::string _elevatorName;
     std::unique_ptr<Manager> _manager;
     State _state;

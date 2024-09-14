@@ -9,7 +9,7 @@ ControlPanel::ControlPanel() {
         _buttonPanel[i - 1] = std::make_pair(false, std::to_string(i));
     }
 
-    // Add service buttons: Dispatcher, Open, Close doors
+
     _buttonPanel.push_back(std::make_pair(false, "D")); // Dispatcher
     _buttonPanel.push_back(std::make_pair(false, "O")); // Open
     _buttonPanel.push_back(std::make_pair(false, "C")); // Close
@@ -26,7 +26,7 @@ const std::vector<std::pair<bool, std::string>>& ControlPanel::getButtons() cons
 bool ControlPanel::pressButton(const std::string& button) {
     unsigned short nbutton = getButtonIndex(button);
     if (nbutton >= MAXBUTTON) throw std::out_of_range("Invalid button");
-    _buttonPanel[nbutton].first = true;  // Set button state to pressed
+    _buttonPanel[nbutton].first = true;  
     return true;
 }
 

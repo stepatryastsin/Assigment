@@ -11,7 +11,7 @@
 
 enum Button {
     NUMBER = 0,
-    DISPETCHER = BUTTONFLOOR, // First service index
+    DISPETCHER = BUTTONFLOOR, 
     CLOSE,
     OPEN
 };

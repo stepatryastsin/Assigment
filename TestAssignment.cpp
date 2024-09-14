@@ -14,7 +14,7 @@ private:
     void taskMode() const;
 
     // Core process methods
-    void elevatorProcess(std::unique_ptr<Elevator>& elevator, std::unique_ptr<Floor>& floor) const;
+    void elevatorProcess(std::unique_ptr<Elevator>& elevator1, std::unique_ptr<Elevator>& elevator2, std::unique_ptr<Floor>& floor) const;
 
     // Utility methods
     int getValidatedInput(const std::string& prompt, int min, int max) const;
@@ -32,23 +32,27 @@ int main() {
 }
 
 void Start::freeMode() const {
-    auto elevator = std::make_unique<Elevator>("Big Elevator", 5);
+    auto elevator2 = std::make_unique<Elevator>("Big", 10);
+    auto elevator1 = std::make_unique<Elevator>("Small", 5);
     auto floor = std::make_unique<Floor>();
 
-    elevatorProcess(elevator, floor);
+    elevatorProcess(elevator2, elevator1, floor);
 }
 
 void Start::taskMode() const {
-    // Task setup: two elevators
-    Elevator elevator1("Elevator 1", 5); // 5 people capacity
-    Elevator elevator2("Elevator 2", 10); // 10 people capacity
+   
+    Elevator elevator1("Elevator 1", 5);
+    Elevator elevator2("Elevator 2", 10); 
     Floor floorControl;
 
-    // Simulate Passenger 1 (calls elevator on floor 1, goes to floor 14)
+    
     simulatePassenger(elevator1, floorControl, 1, 14);
 
-    // Simulate Passenger 2 (calls elevator on floor 15, goes to floor 1)
     simulatePassenger(elevator2, floorControl, 15, 1);
+
+    std::cout<< std::endl;
+
+    std::cout << "Test assigment was success" << std::endl;
 }
 
 void Start::simulation() const {
@@ -66,34 +70,50 @@ void Start::simulation() const {
     }
 }
 
-void Start::elevatorProcess(std::unique_ptr<Elevator>& elevator, std::unique_ptr<Floor>& floor) const {
+void Start::elevatorProcess(std::unique_ptr<Elevator>& elevator1, std::unique_ptr<Elevator>& elevator2, std::unique_ptr<Floor>& floor) const {
     while (true) {
+
         int currentFloor = getValidatedInput("Enter floor (1 - 20): ", 1, 20);
+
+ 
+        Elevator* chosenElevator = nullptr;
+        if (abs(elevator1->getCurrentFloor() - currentFloor) < abs(elevator2->getCurrentFloor() - currentFloor)) {
+            chosenElevator = elevator1.get();  
+        }
+        else {
+            chosenElevator = elevator2.get();  
+        }
+
         floor->call(currentFloor);
-        elevator->move(floor->getFloor());
+        chosenElevator->move(floor->getFloor());
+
 
         int peopleOnFloor = getValidatedInput("How many people on the floor (1 - 5): ", 1, 5);
 
-        while (!elevator->checkWeight(peopleOnFloor)) {
+
+        while (!chosenElevator->checkWeight(peopleOnFloor)) {
             std::cout << "The elevator can't carry this many people!" << std::endl;
             peopleOnFloor = getValidatedInput("Enter the number of people entering the elevator (1 - 5): ", 1, 5);
         }
 
+
         floor->addPeople(peopleOnFloor);
-        elevator->addPeople(peopleOnFloor);
+        chosenElevator->addPeople(peopleOnFloor);
+
 
         std::string command;
-        while (elevator->getCurrentPeopleCount() > 0) {
+        while (chosenElevator->getCurrentPeopleCount() > 0) {
             command = getCommand();
-            if (!elevator->pressButton(command)) {
+            if (!chosenElevator->pressButton(command)) {
                 std::cout << "Error pressing button." << std::endl;
             }
 
-            elevator->action();
+            chosenElevator->action();
 
-            if (elevator->getState() == State::OPENDOOR) {
-                int peopleOut = getValidatedInput("How many people will leave the elevator (1 - " + std::to_string(elevator->getCurrentPeopleCount()) + "): ", 0, elevator->getCurrentPeopleCount());
-                elevator->removePeople(peopleOut);
+
+            if (chosenElevator->getState() == State::OPENDOOR) {
+                int peopleOut = getValidatedInput("How many people will leave the elevator (1 - " + std::to_string(chosenElevator->getCurrentPeopleCount()) + "): ", 0, chosenElevator->getCurrentPeopleCount());
+                chosenElevator->removePeople(peopleOut);
             }
         }
     }
@@ -137,7 +157,7 @@ std::string Start::getCommand() const {
     }
 }
 
-// Simulates an individual passenger calling and using an elevator
+
 void Start::simulatePassenger(Elevator& elevator, Floor& floorControl, int startFloor, int targetFloor) const {
     std::cout << "Passenger calls elevator at floor " << startFloor << " to go to floor " << targetFloor << "." << std::endl;
     floorControl.call(startFloor);
@@ -145,4 +165,5 @@ void Start::simulatePassenger(Elevator& elevator, Floor& floorControl, int start
     elevator.addPeople(1);
     elevator.pressButton(std::to_string(targetFloor));
     elevator.action();
+    elevator.removePeople(1);
 }

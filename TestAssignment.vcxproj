@@ -132,14 +132,12 @@
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="TestAssignment.cpp" />
-    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ControlPanel.h" />
     <ClInclude Include="Elevator.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Manager.h" />
-    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

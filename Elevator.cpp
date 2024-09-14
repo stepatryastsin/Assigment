@@ -3,22 +3,27 @@
 #include <thread>
 #include <algorithm>
 
-unsigned short Elevator::_currentFloor = 1;
-unsigned short Elevator::_currentPeopleCount = 0;
 
 Elevator::Elevator(const std::string& nameElevator, unsigned short capacity)
-    : _elevatorName(nameElevator), _capacity(capacity), _targetFloor(1), _state(State::NONE) {
+    : _elevatorName(nameElevator), _capacity(capacity), _targetFloor(1), _currentFloor(1), _currentPeopleCount(0), _state(State::NONE) {
     _manager = std::make_unique<Manager>("Master Elevator");
 }
 
 void Elevator::move(unsigned short targetFloor) {
     if (targetFloor == _currentFloor) {
-        std::cout << "Elevator already on floor " << _currentFloor << std::endl;
+        std::cout << "Elevator "<< this->_elevatorName <<" already on floor " << _currentFloor << std::endl;
         return;
     }
     while (_currentFloor != targetFloor) {
-        _currentFloor += (targetFloor > _currentFloor) ? 1 : -1;
-        setState((targetFloor > _currentFloor) ? State::UP : State::DOWN);
+        if (targetFloor > _currentFloor) {
+            ++_currentFloor;
+            setState(State::UP);
+        }
+        else {
+            --_currentFloor;
+            setState(State::DOWN);
+        }
+
         printStatus();
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
@@ -43,6 +48,11 @@ void Elevator::removePeople(unsigned short people) {
 
 unsigned short Elevator::getCurrentPeopleCount() const {
     return _currentPeopleCount;
+}
+
+unsigned short Elevator::getCurrentFloor() const
+{
+    return _currentFloor;
 }
 
 void Elevator::action() {
