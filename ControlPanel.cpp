@@ -9,9 +9,9 @@ ControlPanel::ControlPanel() {
 		_buttonPanel[i - 1] = { false, std::to_string(i) };
 	}
 
-	_buttonPanel.emplace_back(false, "D"); 
-	_buttonPanel.emplace_back(false, "O"); 
-	_buttonPanel.emplace_back(false, "C"); 
+	_buttonPanel.emplace_back(false, "D");
+	_buttonPanel.emplace_back(false, "O");
+	_buttonPanel.emplace_back(false, "C");
 	_button = Button::NOTHING;
 }
 
@@ -31,25 +31,25 @@ const std::vector < std::pair<bool, std::string>>& ControlPanel::getButtons() co
 
 bool ControlPanel::pressButton(const std::string& button) {
 	unsigned short nbutton = getButtonIndex(button);
-	assert(nbutton < MAXBUTTON); 
+	assert(nbutton < MAXBUTTON);
 	_buttonPanel[nbutton].first = true;
 	return true;
 }
 
 void ControlPanel::unpressButton(unsigned short button) {
-	assert(button < MAXBUTTON); 
+	assert(button < MAXBUTTON);
 	_buttonPanel[button].first = false;
 }
 
 bool ControlPanel::isButtonPressed(unsigned short button) const {
-	assert(button < MAXBUTTON); 
+	assert(button < MAXBUTTON);
 	return _buttonPanel[button].first;
 }
 
 unsigned short ControlPanel::getButtonIndex(const std::string& button) {
 	if (std::isdigit(button[0])) {
 		unsigned short index = std::stoi(button);
-		assert(index >= 1 && index <= BUTTONFLOOR); 
+		assert(index >= 1 && index <= BUTTONFLOOR);
 		return index - 1;
 	}
 	else if (button == "D") return DISPETCHER;

@@ -136,19 +136,19 @@ int Start::getValidatedInput(const std::string& prompt, int min, int max) const 
 std::string Start::getCommand() const {
     std::string command;
     while (true) {
-        std::cout << "Enter floor (1 - 20) or service button (D, O, C): ";
+        std::cout << "Enter floor (1 - 20) or service button (D, O, C)(Using English): ";
         std::cin >> command;
 
-        if (std::isdigit(command[0])) {
+        if ( std::isdigit(command[0])) {
             int floor = std::stoi(command);
             if (floor >= 1 && floor <= 20) {
                 return command;
             }
         }
-        else if (command == "D" || command == "O" || command == "C") {
+        else if ((command.size() == 1) && (command == "D" || command == "O" || command == "C")) {
             return command;
         }
-
+     Exit:
         std::cout << "Invalid input! Please enter a floor (1 - 20) or one of the buttons (D, O, C)." << std::endl;
     }
 }

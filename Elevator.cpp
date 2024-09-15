@@ -203,7 +203,7 @@ std::ostream& operator<<(std::ostream& out, const Elevator& curr) {
 }
 
 
-void Elevator::handleDoorAction(const std::string& message, State doorState) {
+void Elevator::handleDoorAction(const std::string& message,const State& doorState) {
     setButtonState(doorState == State::OPENDOOR ? Button::OPEN : Button::CLOSE);
     std::cout << message << std::endl;
     setState(doorState);

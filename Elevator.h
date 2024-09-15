@@ -18,22 +18,19 @@ enum State {
 class Elevator : public ControlPanel {
 public:
     Elevator(const std::string& nameElevator, unsigned short capacity);
-
     void move(unsigned short targetFloor);
     bool checkWeight(unsigned short people) const;
     void addPeople(unsigned short people);
     void removePeople(unsigned short people);
-    bool checkDoor();
+    bool checkDoor() ;
     void action();
-    void handleDoorAction(const std::string& message, State doorState);
+    void handleDoorAction(const std::string& message,const State& doorState);
     unsigned short getCurrentPeopleCount() const;
     unsigned short getCurrentFloor() const;
     unsigned short getCapacity() const;
     unsigned short getTarget() const;
     State getState() const;
-
     void master() const;
-
     friend std::ostream& operator<<(std::ostream& out, const Elevator& elevator);
 
 private:
