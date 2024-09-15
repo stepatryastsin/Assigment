@@ -5,7 +5,8 @@ This project implements an **elevator control system simulation**, designed to s
 ## How to Build
 
 ### 1. Clone the repository:
-git clone https://github.com/username/elevator-simulation.git cd elevator-simulation
+git clone https://github.com/stepatryastsin/Assigment.git 
+cd elevator-simulation
 ### 2. Create a build directory:
 mkdir build cd build
 ### 3. Run CMake to generate build files:
