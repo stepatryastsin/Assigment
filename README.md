@@ -13,7 +13,9 @@ cd Assigment
 
 ### 2. Create a build directory:
 ```bash
-mkdir build cd build
+mkdir build
+
+cd build
 ```
 ### 3. Run CMake to generate build files:
 ```bash
