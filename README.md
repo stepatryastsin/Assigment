@@ -8,7 +8,7 @@ This project implements an **elevator control system simulation**, designed to s
 ```bash
 git clone https://github.com/stepatryastsin/Assignment.git 
 
-cd Assigment 
+cd Assignment
 ```
 
 ### 2. Create a build directory:
