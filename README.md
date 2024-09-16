@@ -6,7 +6,7 @@ This project implements an **elevator control system simulation**, designed to s
 
 ### 1. Clone the repository:
 ```bash
-git clone https://github.com/stepatryastsin/Assigment.git 
+git clone https://github.com/stepatryastsin/Assignment.git 
 
 cd Assigment 
 ```
